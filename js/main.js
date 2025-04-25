@@ -6,7 +6,7 @@ const globeContainer = document.getElementById("globe-container");
 
 const myGlobe = new Globe(globeContainer);
 myGlobe.globeImageUrl(
-  "/earth_day.jpg"
+  "./earth_day.jpg"
 );
 
 
