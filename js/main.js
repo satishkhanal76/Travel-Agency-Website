@@ -1,46 +1,127 @@
 import Globe from "globe.gl";
 
+import {parseCsv, getAnimationString, createSectionElements, findTransitionObject, calculateGlobeScale} from "./utils.js";
 
-const allMarkers = [];
+
+// grab elements
+const mainContainer = document.getElementById("main-content");
 const globeContainer = document.getElementById("globe-container");
 
-const myGlobe = new Globe(globeContainer);
+
+const allMarkers = [];
+const myGlobe = new Globe(globeContainer, {
+  animateIn: true,
+  autoRotate: false,
+  width: globeContainer.clientWidth,
+  height: globeContainer.clientHeight,
+  pointOfView: {altitude: calculateGlobeScale(globeContainer)},
+  pointsData: allMarkers,
+});
 myGlobe.globeImageUrl(
   "./earth_day.jpg"
 );
 
+function addSectionObserver(sectionElements, sectionsData) {
 
-myGlobe.onGlobeReady(() => {
-  myGlobe.enablePointerInteraction(true);
-  const controls = myGlobe.controls();
+  let cameraTimeout;
 
-  controls.enabled = false;
+  const options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.6,
+  };
 
-  setTimeout(() => {
-    let data = {
-      lat: 27.9881,
-      lng: 86.925,
-      altitude: 1,
-    };
-    addMarker(27.1751, 78.0421, "red"); // Mount Everest
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const name = entry.target.dataset.name;
+      
+      const sectionData = sectionsData.find(item => item.name === name);
+      const transitionDetails = sectionData.transtionDetails;
 
 
-    myGlobe.pointOfView(data, 1000);
+      const isVisible = entry.isIntersecting;
+      const section = entry.target;
 
-    setTimeout(() => {
+      if (isVisible) {
+        myGlobe.controls().autoRotate = false;
 
-      myGlobe.pointOfView(
-        {
-          lat: 10.9881,
-          lng: 50.925,
-          altitude: 2,
-        },
-        1000
-      );
-      controls.autoRotate = true;
-    }, 5000);
-  }, 1000);
-});
+        const title = section.querySelector('.content-title');
+        const desc = section.querySelector('.content-desc');
+        const images = section.querySelectorAll('.image-container');
+
+
+         // Add animation styles directly through JavaScript
+        if (title) {
+          title.style.animation = getAnimationString(transitionDetails.titleTransitionDetails);
+        }
+
+        if (desc) {
+          // Adding delay to the description
+          desc.style.animation = getAnimationString(transitionDetails.descTransitionDetails);
+        }
+
+        images.forEach(img => {
+          img.style.animation = getAnimationString(transitionDetails.imageTransitionDetails);
+        });
+
+        const cameraTransition = transitionDetails.cameraPanTransitionDetails;
+
+
+        addMarker(sectionData.lat, sectionData.lng, sectionData.color);
+
+        myGlobe.pointOfView({
+          lat: sectionData.lat,
+          lng: sectionData.lng,
+          altitude: 0.9
+        }, parseInt(cameraTransition.transitionDelay));
+
+        clearTimeout(cameraTimeout);
+
+        cameraTimeout = setTimeout(() => {
+          myGlobe.pointOfView({
+            altitude: 2.5
+          }, parseInt(cameraTransition.transitionDelay));
+
+          myGlobe.controls().autoRotate = true;
+        }, (parseInt(cameraTransition.transitionDelay) + parseInt(cameraTransition.transitionDuration)));
+
+      }
+    });
+  }, options);
+
+  sectionElements.forEach(section => observer.observe(section));
+}
+
+async function loadData() {
+  const data = await parseCsv("./data/details.csv");
+  const transitionData = await parseCsv("./data/transitions.csv");
+
+  const sectionData = data.map((item) => {
+    
+
+    const transitionDetails = {
+      titleTransitionDetails: findTransitionObject(item.titleTransitionName, transitionData),
+      descTransitionDetails: findTransitionObject(item.descTransitionName, transitionData),
+      imageTransitionDetails: findTransitionObject(item.imageTransitionName, transitionData),
+      cameraPanTransitionDetails: findTransitionObject(item.cameraPanTransitionName, transitionData)
+
+    }
+
+    item.transtionDetails = transitionDetails;
+    return item;
+  });
+
+  const sectionElements = createSectionElements(data);
+
+  mainContainer.append(...sectionElements);
+
+
+  addSectionObserver(sectionElements, sectionData);
+}
+
+
+loadData();
+
 
 
 const addMarker = (lat, lng, color = "red") => {
@@ -60,3 +141,10 @@ const addMarker = (lat, lng, color = "red") => {
   );
   myGlobe.pointsData(allMarkers);
 };
+
+
+
+window.addEventListener('resize', () => {
+  myGlobe.width([globeContainer.clientWidth]);
+  myGlobe.height([globeContainer.clientHeight]);
+});

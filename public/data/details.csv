@@ -1,0 +1,8 @@
+name,lat,lng,title,desc,color,titleTransitionName,descTransitionName,imgTransitionName,cameraPanTransitionName
+great_wall_of_china,40.4319,116.5704,Great Wall of China,"A historic fortification built over centuries to protect Chinese states from invasions.",#C1440E,great_wall_of_china_title,great_wall_of_china_desc,great_wall_of_china_img,great_wall_of_china_camera_pan
+petra,30.3285,35.4444,Petra,"An archaeological city in Jordan famous for its rock-cut architecture and water conduit system.",#D36C3C,petra_title,petra_desc,petra_img,petra_camera_pan
+christ_the_redeemer,-22.9519,-43.2105,Christ the Redeemer,"An iconic statue of Jesus Christ overlooking Rio de Janeiro from Mount Corcovado.",#A8C3BC,christ_the_redeemer_title,christ_the_redeemer_desc,christ_the_redeemer_img,christ_the_redeemer_camera_pan
+machu_picchu,-13.1631,-72.5450,Machu Picchu,"A 15th-century Inca citadel nestled high in the Andes Mountains of Peru.",#7C9A5C,machu_picchu_title,machu_picchu_desc,machu_picchu_img,machu_picchu_camera_pan
+chichen_itza,20.6843,-88.5678,Chichen Itza,"A large pre-Columbian city built by the Maya, known for the El Castillo pyramid.",#C93A40,chichen_itza_title,chichen_itza_desc,chichen_itza_img,chichen_itza_camera_pan
+roman_colosseum,41.8902,12.4922,Colosseum,"A massive ancient amphitheater in Rome, Italy, that hosted gladiator contests.",#B22222,roman_colosseum_title,roman_colosseum_desc,roman_colosseum_img,roman_colosseum_camera_pan
+taj_mahal,27.1751,78.0421,Taj Mahal,"A white marble mausoleum in Agra, India, symbolizing eternal love.",#FF0000,taj_mahal_title,taj_mahal_desc,taj_mahal_img,taj_mahal_camera_pan

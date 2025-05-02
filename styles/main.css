@@ -4,6 +4,35 @@
   --bg-primary: #000;
 
   --color-slate100: #fff;
+
+  --tx-shadow-title:
+  -0.0625em -0.0625em 0 #000,
+   0        -0.0625em 0 #000,
+   0.0625em -0.0625em 0 #000,
+  -0.0625em  0        0 #000,
+   0.0625em  0        0 #000,
+  -0.0625em  0.0625em 0 #000,
+   0         0.0625em 0 #000,
+   0.0625em  0.0625em 0 #000,
+
+  -0.0625em -0.03125em 0 #000,
+   0.0625em -0.03125em 0 #000,
+  -0.0625em  0.03125em 0 #000,
+   0.0625em  0.03125em 0 #000,
+  -0.03125em -0.0625em 0 #000,
+   0.03125em -0.0625em 0 #000,
+  -0.03125em  0.0625em 0 #000,
+   0.03125em  0.0625em 0 #000;
+
+  --tx-shadow:
+  -0.0625em -0.0625em 0 #000,
+     0        -0.0625em 0 #000,
+     0.0625em -0.0625em 0 #000,
+    -0.0625em  0        0 #000,
+     0.0625em  0        0 #000,
+    -0.0625em  0.0625em 0 #000,
+     0         0.0625em 0 #000,
+     0.0625em  0.0625em 0 #000;
 }
 
 * {
@@ -19,6 +48,8 @@ body {
   background-color: var(--bg-primary);
   font-family: "Poppins", sans-serif;
   font-family: "Signika Negative", sans-serif;
+
+  text-shadow: var(--tx-shadow);
 }
 
 #globe-container {
@@ -69,16 +100,36 @@ img {
   font-weight: 600;
 }
 
-.main-content {
-  margin-inline: 2em;
+.scroll-container {
+  height: 90vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.scroll-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-container .snap-section {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 90vh;
+  margin-inline: 2em;
+
+  
+  height: 100%;
+  scroll-snap-align: start;
+  
 }
 
-.main-content > div {
+.snap-section > div {
   /* background-color: red; */
   flex-grow: 1;
 }
@@ -94,16 +145,13 @@ img {
   font-weight: 900;
   font-size: 3rem;
 
-  opacity: 0;
-  animation: fade-down 1s ease 4s forwards;
+  text-shadow: var(--tx-shadow-title);
 }
 
 .content-left .content-desc {
   font-size: 1rem;
   max-width: 55ch;
-
-  opacity: 0;
-  animation: fade-up 1s ease 5s forwards;
+  
 }
 
 .content-right {
@@ -121,9 +169,6 @@ img {
   width: fit-content;
   max-width: 350px;
   box-shadow: 0px 0px 0.5em white;
-
-  opacity: 0;
-  animation: fade-left 1s ease 6s forwards;
 }
 
 .image-container > img {
@@ -179,4 +224,16 @@ img {
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+.fade-up {
+  animation: fade-up 1s ease forwards;
+}
+
+.fade-down {
+  animation: fade-down 1s ease forwards;
+}
+
+.fade-left {
+  animation: fade-left 1s ease forwards;
 }
