@@ -50,6 +50,8 @@ body {
   font-family: "Signika Negative", sans-serif;
 
   text-shadow: var(--tx-shadow);
+
+  overflow: hidden;
 }
 
 #globe-container {
