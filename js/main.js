@@ -18,7 +18,7 @@ const myGlobe = new Globe(globeContainer, {
   pointsData: allMarkers,
 });
 myGlobe.globeImageUrl(
-  "./earth_day.jpg"
+  "./textures/earth_day.jpg"
 );
 
 function addSectionObserver(sectionElements, sectionsData) {
