@@ -7,6 +7,8 @@ import {parseCsv, getAnimationString, createSectionElements, findTransitionObjec
 const mainContainer = document.getElementById("main-content");
 const globeContainer = document.getElementById("globe-container");
 
+const getFocusedGlobeAltitude = () => window.innerWidth <= 768 ? 1.45 : 0.9;
+const getRestingGlobeAltitude = () => window.innerWidth <= 768 ? 3.4 : 2.5;
 
 const allMarkers = [];
 const myGlobe = new Globe(globeContainer, {
@@ -72,14 +74,14 @@ function addSectionObserver(sectionElements, sectionsData) {
         myGlobe.pointOfView({
           lat: sectionData.lat,
           lng: sectionData.lng,
-          altitude: 0.9
+          altitude: getFocusedGlobeAltitude()
         }, parseInt(cameraTransition.transitionDelay));
 
         clearTimeout(cameraTimeout);
 
         cameraTimeout = setTimeout(() => {
           myGlobe.pointOfView({
-            altitude: 2.5
+            altitude: getRestingGlobeAltitude()
           }, parseInt(cameraTransition.transitionDelay));
 
           myGlobe.controls().autoRotate = true;

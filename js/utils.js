@@ -33,14 +33,34 @@ export const createSectionElements = (data) => data.map((item) => {
     desc.innerText = item.desc;
     desc.classList.add("content-desc");
 
-    [title,desc].forEach((el) => {
-        el.style.opacity = 0;
+    const imageContainer = document.createElement("div");
+    imageContainer.classList.add("image-container");
 
-    }
-    );
+    const image = document.createElement("img");
+    image.src = `./assets/${item.name}.jpg`;
+    image.alt = item.title;
+    image.loading = "lazy";
+
+    const photoCredit = document.createElement("p");
+    photoCredit.classList.add("photo-credit");
+
+    const photoCreditLink = document.createElement("a");
+    photoCreditLink.href = item.photoUrl || "https://unsplash.com";
+    photoCreditLink.target = "_blank";
+    photoCreditLink.rel = "noopener noreferrer";
+    photoCreditLink.textContent = `Photography from Unsplash by ${item.photoAuthor || "Unknown"}`;
+
+    photoCredit.append(photoCreditLink);
+    imageContainer.append(image);
+    imageContainer.append(photoCredit);
+
+    [title, desc, imageContainer].forEach((el) => {
+        el.style.opacity = 0;
+    });
 
     divLeft.append(title);
     divLeft.append(desc);
+    divRight.append(imageContainer);
 
     section.append(divLeft);
     section.append(divRight);
